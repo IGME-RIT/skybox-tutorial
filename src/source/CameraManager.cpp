@@ -18,19 +18,19 @@ void CameraManager::Init(float aspectRatio, float fov, float near, float far)
 
 void CameraManager::Update(float dt)
 {
-	float rotRate = 180.0f;
+	float rotRate = glm::half_pi<float>();
 	if (InputManager::cursorLocked())
 	{
 		glm::vec2 mouseCoords = InputManager::GetMouseCoords();
 
 		_position.x += mouseCoords.x * rotRate;
-		_position.x -= _position.x > 360.0f ? 360.0f : 0.0f;
+		_position.x -= _position.x > glm::two_pi<float>() ? glm::two_pi<float>() : 0.0f;
 
 		_position.y += mouseCoords.y * rotRate;
 	}
 
-	_position.y = _position.y > 45.0f ? 45.0f : _position.y;
-	_position.y = _position.y < -45.0f ? -45.0f : _position.y;
+	_position.y = _position.y > glm::quarter_pi<float>() ? glm::quarter_pi<float>() : _position.y;
+	_position.y = _position.y < -glm::quarter_pi<float>() ? -glm::quarter_pi<float>() : _position.y;
 
 	glm::mat4 bearingMat = glm::mat4_cast(glm::angleAxis(_position.x, glm::vec3(0.0f, 1.0f, 0.0f)));
 	glm::mat4 eleMat = glm::mat4_cast(glm::angleAxis(_position.y, glm::vec3(1.0f, 0.0f, 0.0f)));
@@ -52,7 +52,7 @@ void CameraManager::Update(float dt)
 	if (_skybox)
 	{
 		_skybox->transform().position = _camPos.xyz();
-		_skybox->transform().rotation = glm::angleAxis(180.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+		_skybox->transform().rotation = glm::angleAxis(glm::pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f));
 	}
 }
 
